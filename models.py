@@ -4,13 +4,12 @@ from settings import app, bcrypt, db
 
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(80))
     email = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, id, username, email, password):
-        self.id = id
+    def __init__(self, username, email, password):
         self.username = username
         self.email = email
         self.password = bcrypt.generate_password_hash(

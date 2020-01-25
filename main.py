@@ -9,7 +9,7 @@ def register():
     user = User.query.filter_by(email=data.get('email')).first()
 
     if user:
-        return jsonify({'message': 'User already exists'}), 200
+        return jsonify({'message': 'User already exists'}), 409
 
     user = User(
         username=data['username'],
@@ -39,7 +39,10 @@ def login():
 @app.route('/users')
 def get_users():
     auth_header = request.headers.get('Authorization')
-    token = auth_header.split(" ")[1]
+    try:
+        token = auth_header.split(" ")[1]
+    except AttributeError:
+        token = ''
 
     result = User.decode_auth_token(token)
     if not isinstance(result, str):
