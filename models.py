@@ -9,7 +9,8 @@ class User(db.Model):
     email = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, username, email, password):
+    def __init__(self, id, username, email, password):
+        self.id = id
         self.username = username
         self.email = email
         self.password = bcrypt.generate_password_hash(
@@ -34,6 +35,7 @@ class User(db.Model):
                 app.config.get('SECRET_KEY'),
                 algorithm='HS256'
             )
+        # TODO find out what exception it is
         except Exception as e:
             return e
 
